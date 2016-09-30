@@ -21,6 +21,7 @@ import org.andstatus.app.net.http.HttpConnectionEmpty;
 import org.andstatus.app.net.http.HttpConnectionOAuthApache;
 import org.andstatus.app.net.http.HttpConnectionOAuthJavaNet;
 import org.andstatus.app.net.social.ConnectionEmpty;
+import org.andstatus.app.net.social.ConnectionMastodon;
 import org.andstatus.app.net.social.pumpio.ConnectionPumpio;
 import org.andstatus.app.net.social.ConnectionTwitter1p1;
 import org.andstatus.app.net.social.ConnectionTwitterGnuSocial;
@@ -45,6 +46,7 @@ public enum OriginType {
      */
     PUMPIO(2, "Pump.io", ApiEnum.PUMPIO),
     GNUSOCIAL(3, "GNU social", ApiEnum.GNUSOCIAL_TWITTER),
+    MASTODON(4, "Mastodon", ApiEnum.MASTODON),
     UNKNOWN(0, "?", ApiEnum.UNKNOWN_API);
 
     /**
@@ -59,7 +61,9 @@ public enum OriginType {
         /** GNU social (former: Status Net) Twitter compatible API http://status.net/wiki/Twitter-compatible_API  */
         GNUSOCIAL_TWITTER,
         /** https://github.com/e14n/pump.io/blob/master/API.md */
-        PUMPIO
+        PUMPIO,
+        /** https://github.com/Gargron/mastodon/wiki/API */
+        MASTODON
     }
 
     private static final String BASIC_PATH_DEFAULT = "api";
@@ -178,6 +182,26 @@ public enum OriginType {
                 httpConnectionClassBasic = HttpConnectionBasic.class;
                 mAllowAttachmentForDirectMessage = false;
                 isPublicTimeLineSyncable = true;
+                allowEditing = false;
+                break;
+            case MASTODON:
+                isOAuthDefault = true;
+                canChangeOAuth = false;
+                canSetUrlOfOrigin = false;
+                shouldSetNewUsernameManuallyIfOAuth = false;
+                shouldSetNewUsernameManuallyNoOAuth = true;
+                usernameRegEx = USERNAME_REGEX_DEFAULT;
+                textLimitDefault = 500;
+                basicPath = "api/v1";
+                oauthPath = "oauth";
+                originClass = OriginMastodon.class;
+                connectionClass = ConnectionMastodon.class;
+                httpConnectionClassOauth = HttpConnectionOAuthJavaNet.class;
+                httpConnectionClassBasic = HttpConnectionEmpty.class;
+                mAllowAttachmentForDirectMessage = false;
+                isSearchTimelineSyncable = false;
+                isDirectTimelineSyncable = false;
+                isMentionsTimelineSyncable = true;
                 allowEditing = false;
                 break;
             default:
