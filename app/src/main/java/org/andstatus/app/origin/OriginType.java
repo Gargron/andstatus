@@ -20,6 +20,7 @@ import org.andstatus.app.net.http.HttpConnectionBasic;
 import org.andstatus.app.net.http.HttpConnectionEmpty;
 import org.andstatus.app.net.http.HttpConnectionOAuthApache;
 import org.andstatus.app.net.http.HttpConnectionOAuthJavaNet;
+import org.andstatus.app.net.http.HttpConnectionOAuthMastodon;
 import org.andstatus.app.net.social.ConnectionEmpty;
 import org.andstatus.app.net.social.ConnectionMastodon;
 import org.andstatus.app.net.social.pumpio.ConnectionPumpio;
@@ -187,7 +188,7 @@ public enum OriginType {
             case MASTODON:
                 isOAuthDefault = true;
                 canChangeOAuth = false;
-                canSetUrlOfOrigin = false;
+                canSetUrlOfOrigin = true;
                 shouldSetNewUsernameManuallyIfOAuth = false;
                 shouldSetNewUsernameManuallyNoOAuth = true;
                 usernameRegEx = USERNAME_REGEX_DEFAULT;
@@ -196,7 +197,7 @@ public enum OriginType {
                 oauthPath = "oauth";
                 originClass = OriginMastodon.class;
                 connectionClass = ConnectionMastodon.class;
-                httpConnectionClassOauth = HttpConnectionOAuthJavaNet.class;
+                httpConnectionClassOauth = HttpConnectionOAuthMastodon.class;
                 httpConnectionClassBasic = HttpConnectionEmpty.class;
                 mAllowAttachmentForDirectMessage = false;
                 isSearchTimelineSyncable = false;
